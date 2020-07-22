@@ -9,7 +9,14 @@ namespace PizzaBox.Domain.Models
     public string Region { get; set; }
     public string Format { get; set; }
 
-    public Store(string location, string region="en-US", string format="F")
+    public Store()
+    {
+      Location = "";
+      Region = "";
+      Format = "";
+      Orders = new List<Order>();
+    }
+    public Store(string location, string region = "en-US", string format = "F")
     {
       Location = location;
       Region = region;
