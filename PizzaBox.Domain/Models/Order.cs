@@ -7,10 +7,6 @@ namespace PizzaBox.Domain.Models
   {
     public List<Pizza> Pizzas { get; set; }
     public DateTime Date { get; set; }
-    // public DateTime Date { 
-    //   get {
-    //     return Date.ToString(Store.Region, Store.Format)
-    //   } }
     public string Status { get; set; }
     public Store Store { get; set; }
 

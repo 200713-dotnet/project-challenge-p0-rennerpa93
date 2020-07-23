@@ -6,21 +6,31 @@ namespace PizzaBox.Domain.Models
   {
     public List<Order> Orders { get; set; }
     public string Location { get; set; }
-    public string Region { get; set; }
-    public string Format { get; set; }
 
     public Store()
     {
       Location = "";
-      Region = "";
-      Format = "";
       Orders = new List<Order>();
     }
-    public Store(string location, string region = "en-US", string format = "F")
+    public Store(string location)
     {
       Location = location;
-      Region = region;
-      Format = format;
+    }
+
+    public void DisplayOrders()
+    {
+      foreach (Order order in Orders)
+      {
+        System.Console.WriteLine(order);
+      }
+    }
+
+    public void DisplaySales(System.DateTime startTime, string option="weekly")
+    {
+      if (option == "weekly")
+      {
+        
+      }
     }
   }
 }
