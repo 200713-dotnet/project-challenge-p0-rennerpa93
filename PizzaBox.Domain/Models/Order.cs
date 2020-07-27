@@ -22,6 +22,12 @@ namespace PizzaBox.Domain.Models
       Pizza pizza = store.ChoosePizza();
       pizza.Size = store.ChooseSize();
       pizza.Crust = store.ChooseCrust();
+      if((this.CalculatePrice() + pizza.GetPrice()) > 250)
+      {
+        System.Console.WriteLine("Pizza cannot be added as the order will exceed the $250 limit!");
+        System.Console.WriteLine();
+        return;
+      }
       Pizzas.Add(pizza);
     }
 

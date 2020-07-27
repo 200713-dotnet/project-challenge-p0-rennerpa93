@@ -53,6 +53,10 @@ namespace PizzaBox.Domain.Models
         switch (select)
         {
           case 1:
+            if (user.Orders.Count >= 50) {
+              System.Console.WriteLine("You cannot have more than 50 pizzas in one order!");
+              System.Console.WriteLine();
+            }
             order.CreatePizza(this);
             break;
           case 2:
