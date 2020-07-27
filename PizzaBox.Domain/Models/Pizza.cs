@@ -10,6 +10,17 @@ namespace PizzaBox.Domain.Models
     public Crust Crust { get; set; }
     public List<Topping> Toppings { get; set; }
 
+    public Pizza()
+    {
+    }
+
+    public Pizza(string name, Size size, Crust crust, List<Topping> toppings)
+    {
+      Name = name;
+      Size = size;
+      Crust = crust;
+      Toppings = toppings;
+    }
     public double GetPrice()
     {
       double price = 0;
@@ -21,7 +32,7 @@ namespace PizzaBox.Domain.Models
       price += Crust.Price;
       return price;
     }
-    
+
     public override string ToString()
     {
       int count = 0;
