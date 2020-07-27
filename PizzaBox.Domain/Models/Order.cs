@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace PizzaBox.Domain.Models
 {
@@ -8,13 +9,85 @@ namespace PizzaBox.Domain.Models
     public List<Pizza> Pizzas { get; set; }
     public DateTime Date { get; set; }
     public string Status { get; set; }
-    public Store Store { get; set; }
 
-    public Order(Store store) {
+    public Order()
+    {
       Pizzas = new List<Pizza>();
       Date = DateTime.Now;
-      Status = "Placed";
-      Store = store;
+      Status = "Incomplete";
+    }
+
+    public void CreatePizza(Store store)
+    {
+      Pizza pizza = store.ChoosePizza();
+      pizza.Size = store.ChooseSize();
+      pizza.Crust = store.ChooseCrust();
+      Pizzas.Add(pizza);
+    }
+
+    public void RemovePizza()
+    {
+      bool end = false;
+      int select;
+
+      do
+      {
+        System.Console.WriteLine("Type the number of the pizza to remove or 0 to return");
+        DisplayOrder();
+        if (int.TryParse(System.Console.ReadLine(), out select))
+        {
+          System.Console.WriteLine();
+        }
+        else
+        {
+          System.Console.WriteLine("Invalid Choice");
+          end = true;
+          continue;
+        }
+        if ((select > Pizzas.Count || select < 1))
+        {
+          System.Console.WriteLine("");
+        }
+        else
+        {
+          Pizzas.RemoveAt(select - 1);
+        }
+      } while (end);
+    }
+
+    public void DisplayOrder()
+    {
+      System.Console.WriteLine(this);
+    }
+
+    public double CalculatePrice()
+    {
+      double price = 0;
+      foreach (Pizza p in Pizzas)
+      {
+        price += p.GetPrice();
+      }
+      return price;
+    }
+
+    public override string ToString()
+    {
+      int count = 1;
+      var sb = new StringBuilder();
+      foreach (Pizza p in Pizzas)
+      {
+        if (count == 1)
+        {
+          sb.Append($"{count} : {p} - Price: ${p.GetPrice()}");
+        }
+        else
+        {
+          sb.Append($"\n{count} : {p} - Price: ${p.GetPrice()}");
+        }
+        count += 1;
+      }
+
+      return $"{sb}\nStatus: {Status}  Total Cost: ${CalculatePrice()}\n";
     }
   }
 }
