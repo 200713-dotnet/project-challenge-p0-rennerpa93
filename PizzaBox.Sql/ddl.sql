@@ -95,8 +95,6 @@ create table Store.Store
 (
   StoreId int not null,
   [Location] nvarchar(255) not null,
-  LastOrdered DATETIME2(0) null,
-  CurrentStore nvarchar(255) null,
   Active bit not null default 1
 );
 go
@@ -135,6 +133,9 @@ alter table Pizza.PizzaTopping
 
 alter table [User].[User]
   add constraint PK_UserId primary key (UserId)
+
+alter table Store.Store
+  add constraint PK_StoreId primary key (StoreId)
 
 alter table [Order].[Order]
   add constraint PK_OrderId primary key (OrderId)
