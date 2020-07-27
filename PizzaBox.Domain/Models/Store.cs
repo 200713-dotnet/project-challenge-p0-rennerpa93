@@ -53,7 +53,8 @@ namespace PizzaBox.Domain.Models
         switch (select)
         {
           case 1:
-            if (user.Orders.Count >= 50) {
+            if (user.Orders.Count >= 50)
+            {
               System.Console.WriteLine("You cannot have more than 50 pizzas in one order!");
               System.Console.WriteLine();
             }
@@ -225,6 +226,12 @@ namespace PizzaBox.Domain.Models
       bool end = true;
       do
       {
+        if (toppings.Count >= 5)
+        {
+          System.Console.WriteLine("Cannot add more than 5 toppings!");
+          System.Console.WriteLine();
+          return toppings;
+        }
         System.Console.WriteLine("Type a number to select add a topping");
         System.Console.WriteLine("1 - Cheese : $0.25");
         System.Console.WriteLine("2 - Pepperoni : $0.25");
@@ -271,7 +278,7 @@ namespace PizzaBox.Domain.Models
             end = false;
             break;
         }
-      } while(end);
+      } while (end);
 
       return toppings;
     }
