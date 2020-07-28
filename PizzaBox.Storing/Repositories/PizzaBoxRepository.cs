@@ -22,7 +22,7 @@ namespace PizzaBox.Storing.Repositories
     public void CreatePizza(domain.Pizza pizza)
     {
       var newPizza = new Pizza();
-      var pizzaTopping = new PizzaTopping();
+      
 
       newPizza.Name = pizza.Name;
 
@@ -38,25 +38,29 @@ namespace PizzaBox.Storing.Repositories
         Price = (decimal)pizza.Size.Price
       };
 
-      pizzaTopping.Pizza = newPizza;
-
       _db.Pizza.Add(newPizza);
 
       foreach (domain.Topping t in pizza.Toppings)
       {
+        var pizzaTopping = new PizzaTopping();
+        pizzaTopping.Pizza = newPizza;
         Topping newTop = new Topping()
         {
           Name = t.Name,
           Price = (decimal)t.Price
         };
         pizzaTopping.Topping = newTop;
+        _db.PizzaTopping.Add(pizzaTopping);
       }
 
-      _db.PizzaTopping.Add(pizzaTopping);
       _db.SaveChanges();
     }
 
-    
+    public void CreateOrder(domain.Order order)
+    {
+      var newOrder = new Order();
+
+    }
 
     public void ReadPizza()
     {

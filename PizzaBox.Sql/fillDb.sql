@@ -65,6 +65,10 @@ values('Pineapple', 0.50);
 --insert into Pizza.PizzaTopping(PizzaId, ToppingId)
 --values(1,1);
 
+
+use PizzaBoxDb;
+go
+
 select * from Pizza.Crust;
 select * from Pizza.Size;
 select * from Pizza.Topping;
