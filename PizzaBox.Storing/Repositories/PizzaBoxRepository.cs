@@ -19,10 +19,10 @@ namespace PizzaBox.Storing.Repositories
       _db.SaveChanges();
     }
 
-    public void CreatePizza(domain.Pizza pizza)
+    public void CreatePizza(domain.Pizza pizza, int orderId)
     {
       var newPizza = new Pizza();
-      
+
 
       newPizza.Name = pizza.Name;
 
@@ -37,6 +37,8 @@ namespace PizzaBox.Storing.Repositories
         Name = pizza.Size.Name,
         Price = (decimal)pizza.Size.Price
       };
+
+      newPizza.OrderId = orderId;
 
       _db.Pizza.Add(newPizza);
 
@@ -56,16 +58,55 @@ namespace PizzaBox.Storing.Repositories
       _db.SaveChanges();
     }
 
-    public void CreateOrder(domain.Order order)
+    public void CreateOrder(domain.Order order, int userid, int storeid)
     {
       var newOrder = new Order();
+      newOrder.UserId = userid;
+      newOrder.StoreId = storeid;
+      newOrder.Status = order.Status;
+      newOrder.DateCreated = order.Date;
+      _db.Order.Add(newOrder);
+      _db.SaveChanges();
+      int newOrderId = newOrder.OrderId;
+
+      foreach (domain.Pizza p in order.Pizzas)
+      {
+        CreatePizza(p, newOrderId);
+      }
 
     }
 
+    public List<domain.Order> ReadOrders(int id, string type = "Store")
+    {
+      List<domain.Order> orders = new List<domain.Order>();
+      if (type == "Store")
+      {
+        var orderEntities = _db.Order.Where(o => o.StoreId == id).Include(o => o.Pizza);
+      }
+      else
+      {
+        var orderEntities = _db.Order.Where(o => o.UserId == id).Include(o => o.Pizza);
+      }
+      return orders;
+    }
+    
+    public List<domain.Store> ReadStores()
+    {
+      List<domain.Store> stores = new List<domain.Store>();
+
+      var storeEntities = _db.Store.ToList();
+      foreach (Store s in storeEntities)
+      {
+
+      }
+
+      return stores;
+    }
     public void ReadPizza()
     {
       //var pizzas = _db.Pizza;
       //var pizzaswithcrust = _db.Pizza.Include(t => t.Crust).Include(t => t.Size);
+      var domainPizzas = new List<domain.Pizza>();
       var pizzas = _db.PizzaTopping.Include(t => t.Pizza).Include(t => t.Topping);
 
     }
