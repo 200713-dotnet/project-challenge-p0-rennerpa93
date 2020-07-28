@@ -13,6 +13,8 @@ namespace PizzaBox.Domain.Models
 
     public Size()
     {
+      Name = "";
+      Price = 0;
     }
 
     public override string ToString()

@@ -14,6 +14,8 @@ namespace PizzaBox.Domain.Models
 
     public Crust()
     {
+      Type = "";
+      Price = 0;
     }
 
     public override string ToString() 

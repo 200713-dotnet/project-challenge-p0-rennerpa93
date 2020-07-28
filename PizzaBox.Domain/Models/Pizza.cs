@@ -12,6 +12,10 @@ namespace PizzaBox.Domain.Models
 
     public Pizza()
     {
+      Name = "";
+      Size = new Size();
+      Crust = new Crust();
+      Toppings = new List<Topping>();
     }
 
     public Pizza(string name, Size size, Crust crust, List<Topping> toppings)

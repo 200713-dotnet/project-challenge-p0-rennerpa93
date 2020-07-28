@@ -8,6 +8,12 @@ namespace PizzaBox.Domain.Models
     public List<Order> Orders { get; set; }
     public string Location { get; set; }
 
+    public Store()
+    {
+      Location = "";
+      Orders = new List<Order>();
+    }
+    
     public Store(string location)
     {
       Location = location;

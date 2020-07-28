@@ -89,7 +89,7 @@ namespace PizzaBox.Storing.Repositories
       }
       return orders;
     }
-    
+
     public List<domain.Store> ReadStores()
     {
       List<domain.Store> stores = new List<domain.Store>();
@@ -102,13 +102,27 @@ namespace PizzaBox.Storing.Repositories
 
       return stores;
     }
-    public void ReadPizza()
+    public domain.Pizza ReadPizza(int orderId)
     {
       //var pizzas = _db.Pizza;
       //var pizzaswithcrust = _db.Pizza.Include(t => t.Crust).Include(t => t.Size);
       var domainPizzas = new List<domain.Pizza>();
-      var pizzas = _db.PizzaTopping.Include(t => t.Pizza).Include(t => t.Topping);
+      var dbPizza = _db.Pizza.Include(t => t.Crust).Include(t => t.Size).FirstOrDefault(t => t.OrderId==orderId);
+      
+      domain.Pizza pizza = new domain.Pizza();
+      
+      pizza.Name = dbPizza.Name;
+      pizza.Size = new domain.Size() { Name = dbPizza.Size.Name, Price = (double)dbPizza.Size.Price };
+      pizza.Crust = new domain.Crust() { Type = dbPizza.Crust.Type, Price = (double)dbPizza.Crust.Price };
+      
+      var pizzaToppings = _db.PizzaTopping.Where(t => t.PizzaId == dbPizza.PizzaId).Include(t => t.Topping);
+      foreach (PizzaTopping pt in pizzaToppings)
+      {
+        domain.Topping newTop = new domain.Topping(){ Name = pt.Topping.Name, Price = (double)pt.Topping.Price };
+        pizza.Toppings.Add(newTop);
+      }
 
+      return pizza;
     }
     public domain.User ReadUser(string email)
     {

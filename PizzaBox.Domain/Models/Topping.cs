@@ -5,6 +5,11 @@ namespace PizzaBox.Domain.Models
     public double Price { get; set; }
     public string Name { get; set; }
 
+    public Topping() 
+    {
+      Price = 0;
+      Name = "";
+    }
     public Topping(string name, double price)
     {
       Name = name;

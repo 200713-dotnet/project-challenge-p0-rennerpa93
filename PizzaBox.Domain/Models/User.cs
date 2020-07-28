@@ -17,12 +17,16 @@ namespace PizzaBox.Domain.Models
       Orders = orders;
       LastOrdered = lastordered;
     }
-    public User(string email) {
+    public User(string email) 
+    {
       Email = email;
       Orders = new List<Order>();
     }
-    public User() {
-
+    public User() 
+    {
+      Email = "";
+      Orders = new List<Order>();
+      LastOrdered = DateTime.Now;
     }
     public void DisplayOrders()
     {
