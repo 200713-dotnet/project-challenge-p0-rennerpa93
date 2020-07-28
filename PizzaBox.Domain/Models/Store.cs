@@ -4,6 +4,7 @@ namespace PizzaBox.Domain.Models
 {
   public class Store
   {
+    public int Id { get; set; }
     public List<Order> Orders { get; set; }
     public string Location { get; set; }
 
@@ -11,6 +12,13 @@ namespace PizzaBox.Domain.Models
     {
       Location = location;
       Orders = new List<Order>();
+    }
+
+    public Store(int id, string location, List<Order> orders)
+    {
+      Id = id;
+      Location = location;
+      Orders = orders;
     }
 
     public void DisplayOrders()

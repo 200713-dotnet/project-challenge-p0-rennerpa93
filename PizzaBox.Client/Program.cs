@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using PizzaBox.Domain.Models;
 
 namespace PizzaBox.Client
@@ -7,13 +9,15 @@ namespace PizzaBox.Client
   {
     static void Main(string[] args)
     {
+      var db = new PizzaBox.Storing.PizzaBoxDbContext();
       Store MainStore;
-      Store store = new Store("Michigan");
-      Store store2 = new Store("Texas");
-      System.Console.WriteLine($"Please choose a Location: [{store.Location}]  [{store2.Location}]");
+      System.Console.Write($"Please choose a Location: ");
+      var stores = db.Store.ToList();
+      
       string loc = System.Console.ReadLine();
       System.Console.WriteLine();
-      MainStore = new Store(loc);
+
+      MainStore = new Store(1,loc,new List<Order>());
 
       string choice;
       System.Console.WriteLine("Are you a [Store] or [User]?");
@@ -42,10 +46,10 @@ namespace PizzaBox.Client
           switch (select)
           {
             case 1:
-              store.DisplayOrders();
+              MainStore.DisplayOrders();
               break;
             case 2:
-              store.DisplaySales(new DateTime());
+              MainStore.DisplaySales(new DateTime());
               break;
             default:
               check = false;
@@ -84,7 +88,7 @@ namespace PizzaBox.Client
               break;
             case 2:
               Order order = new Order();
-              store.ModifyOrder(user, order);
+              MainStore.ModifyOrder(user, order);
               break;
             default:
               check = false;
