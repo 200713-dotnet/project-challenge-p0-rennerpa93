@@ -12,6 +12,7 @@ namespace PizzaBox.Client
     {
       var repo = new PizzaBoxRepository();
       var db = new PizzaBox.Storing.PizzaBoxDbContext();
+      
       Store MainStore;
       System.Console.Write($"Please choose a Location: ");
       
@@ -97,7 +98,6 @@ namespace PizzaBox.Client
               break;
           }
         } while (check);
-
       }
     }
   }

@@ -19,6 +19,45 @@ namespace PizzaBox.Storing.Repositories
       _db.SaveChanges();
     }
 
+    public void CreatePizza(domain.Pizza pizza)
+    {
+      var newPizza = new Pizza();
+      var pizzaTopping = new PizzaTopping();
+
+      newPizza.Name = pizza.Name;
+
+      newPizza.Crust = new Crust()
+      {
+        Type = pizza.Crust.Type,
+        Price = (decimal)pizza.Crust.Price
+      };
+
+      newPizza.Size = new Size()
+      {
+        Name = pizza.Size.Name,
+        Price = (decimal)pizza.Size.Price
+      };
+
+      pizzaTopping.Pizza = newPizza;
+
+      _db.Pizza.Add(newPizza);
+
+      foreach (domain.Topping t in pizza.Toppings)
+      {
+        Topping newTop = new Topping()
+        {
+          Name = t.Name,
+          Price = (decimal)t.Price
+        };
+        pizzaTopping.Topping = newTop;
+      }
+
+      _db.PizzaTopping.Add(pizzaTopping);
+      _db.SaveChanges();
+    }
+
+    
+
     public void ReadPizza()
     {
       //var pizzas = _db.Pizza;
@@ -28,7 +67,6 @@ namespace PizzaBox.Storing.Repositories
     }
     public domain.User ReadUser(string email)
     {
-
       //var rUser = _db.User.Where(u => u.Email == email).Include(u => u.Order).FirstOrDefault<User>();
       var rUser = _db.User.Include(u => u.Order).ThenInclude(u => u.Pizza).FirstOrDefault(u => u.Email == email);
 
@@ -46,30 +84,12 @@ namespace PizzaBox.Storing.Repositories
         nOrder.OrderId = o.OrderId;
         nOrder.StoreId = o.StoreId;
         nOrder.UserId = o.UserId;
+        nOrders.Add(nOrder);
       }
       eUser.Orders = nOrders;
       return eUser;
     }
 
-    public void CreateTopping(domain.Topping topping)
-    {
-      var newTopping = new Topping();
-
-    }
-    public void CreatePizza(domain.Pizza pizza)
-    {
-      var newPizza = new Pizza();
-      var topping = new PizzaTopping();
-
-      newPizza.Name = pizza.Name;
-      newPizza.Crust = new Crust() { Type = pizza.Crust.Type };
-      newPizza.Size = new Size() { Name = pizza.Size.Name };
-
-      _db.PizzaTopping.Add(topping);
-      _db.SaveChanges();
-
-    }
-    
     public void UpdatePizza()
     {
     }

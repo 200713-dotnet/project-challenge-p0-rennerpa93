@@ -32,6 +32,7 @@ namespace PizzaBox.Domain.Models
         return;
       }
       Pizzas.Add(pizza);
+
     }
 
     public void RemovePizza()

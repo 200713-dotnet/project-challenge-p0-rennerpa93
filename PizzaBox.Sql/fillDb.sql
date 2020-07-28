@@ -1,116 +1,72 @@
-use master;
-go
-
-drop database PizzaBoxDb;
-go
-
--- creates
-create database PizzaBoxDb;
-go
-
 use PizzaBoxDb;
 go
 
-create schema Pizza;
-go
+-- Store Setup
 
-create schema [Order];
-GO
+insert into Store.Store(Location)
+values('Michigan')
+insert into Store.Store(Location)
+values('Texas')
 
-create schema [User];
-go
+select * from Store.Store
 
-create schema Store;
-go
+select * from [Order].[Order];
+select * from [User].[User];
 
--- Create Tables
+--insert into [User].[User](Email, LastOrdered, CurrentStore)
+--values('rawr', convert(datetime,getdate(),103), 1)
 
-create table Pizza.Pizza
-(
-  PizzaId int not null identity(1,1) primary key,
-  CrustId int null,
-  SizeId int null,
-  OrderId int null,
-  [Name] nvarchar(255) not null
-);
+--insert into [Order].[Order](Status, UserId, StoreId, DateCreated)
+--values('Completed', 1, 1, convert(datetime,getdate(),103));
 
---drop table Pizza.Pizza;
+-- Insert Crusts
 
-create table Pizza.Crust
-(
-  CrustId int not null identity(1,1) primary key,
-  [Type] nvarchar(255) not null,
-  Price decimal not null
-);
+insert into Pizza.Crust([Type], Price)
+values('Normal Crust', 0);
+insert into Pizza.Crust([Type], Price)
+values('Cheese-Stuffed Crust', 1.00);
+insert into Pizza.Crust([Type], Price)
+values('Parmesan Garlic Crust', 1.00);
+insert into Pizza.Crust([Type], Price)
+values('Parmesan Garlic Cheese-Stuffed Crust', 2.00);
 
-create table Pizza.Size
-(
-  SizeId int not null identity(1,1) primary key,
-  [Name] nvarchar(255) not null,
-  Price decimal not null
-);
+-- Insert Sizes
 
-create table Pizza.Topping
-(
-  ToppingId int not null identity(1,1) primary key,
-  [Name] nvarchar(255) not null,
-  Price decimal not null
-);
+insert into Pizza.Size([Name], Price)
+values('Small', 5);
+insert into Pizza.Size([Name], Price)
+values('Medium', 7.00);
+insert into Pizza.Size([Name], Price)
+values('Large', 9.00);
+insert into Pizza.Size([Name], Price)
+values('Extra-Large', 11.00);
 
-create table Pizza.PizzaTopping
-(
-  PizzaToppingId int not null identity(1,1) primary key,
-  PizzaId int not null,
-  ToppingId int not null,
-);
-go
+-- Insert Toppings
 
-create table [Order].[Order]
-(
-  OrderId int not null identity(1,1) primary key,
-  [Status] nvarchar(255) not null,
-  UserId int null,
-  StoreId int null,
-  DateCreated DATETIME2(0) not null,
-);
-go
+insert into Pizza.Topping([Name], Price)
+values('Cheese', 0.25);
+insert into Pizza.Topping([Name], Price)
+values('Pepperoni', 0.25);
+insert into Pizza.Topping([Name], Price)
+values('Green Peppers', 0.25);
+insert into Pizza.Topping([Name], Price)
+values('Onions', 0.25);
+insert into Pizza.Topping([Name], Price)
+values('Ham', 0.50);
+insert into Pizza.Topping([Name], Price)
+values('Sausage', 0.50);
+insert into Pizza.Topping([Name], Price)
+values('Pineapple', 0.50);
 
-create table [User].[User]
-(
-  UserId int not null identity(1,1) primary key,
-  Email nvarchar(255) not null,
-  LastOrdered DATETIME2(0) null,
-  CurrentStore nvarchar(255) null,
-);
 
-create table Store.Store
-(
-  StoreId int not null identity(1,1) primary key,
-  [Location] nvarchar(255) not null,
-);
-go
+--insert into Pizza.Pizza(CrustId,SizeId,OrderId,Name)
+--values(1,1,1,'Cheese Pizza');
 
--- Alters
+--insert into Pizza.PizzaTopping(PizzaId, ToppingId)
+--values(1,1);
 
-alter table Pizza.Pizza
-  add constraint FK_CrustId foreign key (CrustId) references Pizza.Crust(CrustId)
-
-alter table Pizza.Pizza
-  add constraint FK_SizeId foreign key (SizeId) references Pizza.Size(SizeId)
-
-alter table Pizza.Pizza
-  add constraint FK_OrderId foreign key (OrderId) references [Order].[Order](OrderId)
-
-alter table Pizza.PizzaTopping
-  add constraint FK_PizzaTopping_PizzaId foreign key (PizzaId) references Pizza.Pizza(PizzaId)
-
-alter table Pizza.PizzaTopping
-  add constraint FK_PizzaTopping_ToppingId foreign key (ToppingId) references Pizza.Topping(ToppingId)
-
-alter table [Order].[Order]
-  add constraint FK_UserId foreign key (UserId) references [User].[User](UserId)
-
-alter table [Order].[Order]
-  add constraint FK_StoreId foreign key (StoreId) references Store.Store(StoreId)
-
-go
+select * from Pizza.Crust;
+select * from Pizza.Size;
+select * from Pizza.Topping;
+select * from Pizza.Pizza;
+select * from Pizza.PizzaTopping;
