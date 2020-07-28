@@ -79,13 +79,28 @@ namespace PizzaBox.Storing.Repositories
     public List<domain.Order> ReadOrders(int id, string type = "Store")
     {
       List<domain.Order> orders = new List<domain.Order>();
+
+      List<Order> orderEntities;
       if (type == "Store")
       {
-        var orderEntities = _db.Order.Where(o => o.StoreId == id).Include(o => o.Pizza);
+        orderEntities = _db.Order.Where(o => o.StoreId == id).ToList();
       }
       else
       {
-        var orderEntities = _db.Order.Where(o => o.UserId == id).Include(o => o.Pizza);
+        orderEntities = _db.Order.Where(o => o.UserId == id).ToList();
+      }
+
+      foreach (Order o in orderEntities)
+      {
+        domain.Order newO = new domain.Order();
+        newO.Date = o.DateCreated;
+        newO.Status = o.Status;
+        newO.OrderId = o.OrderId;
+        newO.StoreId = o.StoreId;
+        newO.UserId = o.UserId;
+
+        newO.Pizzas = ReadAllPizzas(newO.OrderId);
+        orders.Add(newO);
       }
       return orders;
     }
@@ -107,22 +122,49 @@ namespace PizzaBox.Storing.Repositories
       //var pizzas = _db.Pizza;
       //var pizzaswithcrust = _db.Pizza.Include(t => t.Crust).Include(t => t.Size);
       var domainPizzas = new List<domain.Pizza>();
-      var dbPizza = _db.Pizza.Include(t => t.Crust).Include(t => t.Size).FirstOrDefault(t => t.OrderId==orderId);
-      
+      var dbPizza = _db.Pizza.Include(t => t.Crust).Include(t => t.Size).FirstOrDefault(t => t.OrderId == orderId);
+
       domain.Pizza pizza = new domain.Pizza();
-      
+
       pizza.Name = dbPizza.Name;
       pizza.Size = new domain.Size() { Name = dbPizza.Size.Name, Price = (double)dbPizza.Size.Price };
       pizza.Crust = new domain.Crust() { Type = dbPizza.Crust.Type, Price = (double)dbPizza.Crust.Price };
-      
+
       var pizzaToppings = _db.PizzaTopping.Where(t => t.PizzaId == dbPizza.PizzaId).Include(t => t.Topping);
       foreach (PizzaTopping pt in pizzaToppings)
       {
-        domain.Topping newTop = new domain.Topping(){ Name = pt.Topping.Name, Price = (double)pt.Topping.Price };
+        domain.Topping newTop = new domain.Topping() { Name = pt.Topping.Name, Price = (double)pt.Topping.Price };
         pizza.Toppings.Add(newTop);
       }
 
       return pizza;
+    }
+
+    public List<domain.Pizza> ReadAllPizzas(int orderId)
+    {
+      //var pizzas = _db.Pizza;
+      //var pizzaswithcrust = _db.Pizza.Include(t => t.Crust).Include(t => t.Size);
+      var domainPizzas = new List<domain.Pizza>();
+      var dbPizzas = _db.Pizza.Include(t => t.Crust).Include(t => t.Size).Where(t => t.OrderId == orderId).ToList();
+
+      
+      foreach (Pizza dbPizza in dbPizzas)
+      {
+        domain.Pizza pizza = new domain.Pizza();
+        pizza.Name = dbPizza.Name;
+        pizza.Size = new domain.Size() { Name = dbPizza.Size.Name, Price = (double)dbPizza.Size.Price };
+        pizza.Crust = new domain.Crust() { Type = dbPizza.Crust.Type, Price = (double)dbPizza.Crust.Price };
+
+        var pizzaToppings = _db.PizzaTopping.Where(t => t.PizzaId == dbPizza.PizzaId).Include(t => t.Topping);
+        foreach (PizzaTopping pt in pizzaToppings)
+        {
+          domain.Topping newTop = new domain.Topping() { Name = pt.Topping.Name, Price = (double)pt.Topping.Price };
+          pizza.Toppings.Add(newTop);
+        }
+        domainPizzas.Add(pizza);
+      }
+
+      return domainPizzas;
     }
     public domain.User ReadUser(string email)
     {

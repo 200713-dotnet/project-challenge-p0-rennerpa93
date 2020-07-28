@@ -20,8 +20,10 @@ namespace PizzaBox.Testing.Tests
     {
       var repo = new PizzaBoxRepository();
       Order o = new Order();
-      Pizza p = new Pizza("Cheese Pizza", new Size("Small", 5.00), new Crust("Normal Crust", 0), new List<Topping> { new Topping("Cheese", 0.25), new Topping("Pepperoni", 0.25) });
+      Pizza p = new Pizza("Cheese Pizza", new Size("Small", 5.00), new Crust("Normal Crust", 0), new List<Topping> { new Topping("Cheese", 0.25) });
+      Pizza p2 = new Pizza("Pepperoni Pizza", new Size("Small", 5.00), new Crust("Normal Crust", 0), new List<Topping> { new Topping("Cheese", 0.25), new Topping("Pepperoni", 0.25) });
       o.Pizzas.Add(p);
+      o.Pizzas.Add(p2);
       repo.CreateOrder(o, 1, 1);
     }
 
@@ -32,7 +34,6 @@ namespace PizzaBox.Testing.Tests
       Pizza p = repo.ReadPizza(3);
       Pizza act = new Pizza("Cheese Pizza", new Size("Small", 5.00), new Crust("Normal Crust", 0), new List<Topping> { new Topping("Cheese", 0.25), new Topping("Pepperoni", 0.25) });
       Assert.IsType<Pizza>(act);
-      //Assert.Equal(act, p);
     }
   }
 }
