@@ -6,6 +6,9 @@ namespace PizzaBox.Domain.Models
 {
   public class Order
   {
+    public int OrderId { get; set; }
+    public int? UserId { get; set; }
+    public int? StoreId { get; set; }
     public List<Pizza> Pizzas { get; set; }
     public DateTime Date { get; set; }
     public string Status { get; set; }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using PizzaBox.Domain.Models;
+using PizzaBox.Storing.Repositories;
 
 namespace PizzaBox.Client
 {
@@ -9,10 +10,10 @@ namespace PizzaBox.Client
   {
     static void Main(string[] args)
     {
+      var repo = new PizzaBoxRepository();
       var db = new PizzaBox.Storing.PizzaBoxDbContext();
       Store MainStore;
       System.Console.Write($"Please choose a Location: ");
-      var stores = db.Store.ToList();
       
       string loc = System.Console.ReadLine();
       System.Console.WriteLine();
@@ -64,6 +65,7 @@ namespace PizzaBox.Client
         email = System.Console.ReadLine();
         System.Console.WriteLine();
         User user = new User(email);
+        repo.CreateUser(user);
         bool check = true;
         int select;
         do
