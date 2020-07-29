@@ -13,14 +13,31 @@ namespace PizzaBox.Client
       var repo = new PizzaBoxRepository();
       var db = new PizzaBox.Storing.PizzaBoxDbContext();
 
- 
       Store MainStore;
-      System.Console.Write($"Please choose a Location: ");
-      
-      string loc = System.Console.ReadLine();
-      System.Console.WriteLine();
+      List<Store> stores = repo.ReadStores();
+      System.Console.WriteLine("Pick the number for the store you would like to use.");
+      foreach (Store s in stores)
+      {
+        System.Console.WriteLine($"{s.Id} - {s.Location}");
+      }
 
-      MainStore = new Store(1,loc,new List<Order>());
+      int num;
+      bool storeEnd = true;
+      do
+      {
+        if (int.TryParse(System.Console.ReadLine(), out num))
+        {
+          System.Console.WriteLine();
+          storeEnd = false;
+        }
+        else
+        {
+          System.Console.WriteLine("Invalid Choice");
+          continue;
+        }
+      } while (storeEnd);
+
+      MainStore = stores[num - 1];
 
       string choice;
       System.Console.WriteLine("Are you a [Store] or [User]?");
@@ -66,8 +83,8 @@ namespace PizzaBox.Client
         System.Console.WriteLine("Please enter your email");
         email = System.Console.ReadLine();
         System.Console.WriteLine();
-        User user = new User(email);
-        repo.CreateUser(user);
+        User user = repo.ReadUser(email);
+
         bool check = true;
         int select;
         do
