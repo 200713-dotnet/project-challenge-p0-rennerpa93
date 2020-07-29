@@ -7,7 +7,10 @@ insert into Store.Store(Location)
 values('Michigan')
 insert into Store.Store(Location)
 values('Texas')
+insert into Store.Store(Location)
+values('Virginia')
 
+delete from Store.Store where Location = 'Virginia';
 select * from Store.Store
 
 select * from [Order].[Order];

@@ -30,6 +30,11 @@ namespace PizzaBox.Domain.Models
     }
     public void DisplayOrders()
     {
+      if (Orders.Count < 1)
+      {
+        System.Console.WriteLine("There are no orders!");
+        System.Console.WriteLine();
+      }
       int count = 1;
       foreach (Order order in Orders)
       {

@@ -185,6 +185,9 @@ namespace PizzaBox.Storing.Repositories
       }
       catch (Exception e)
       {
+        Exception o = e;
+        System.Console.WriteLine($"Welcome {email}!");
+        System.Console.WriteLine();
         return CreateUser(email);
       }
 
@@ -195,6 +198,9 @@ namespace PizzaBox.Storing.Repositories
       eUser.Email = rUser.Email;
       eUser.LastOrdered = rUser.LastOrdered;
       eUser.Orders = ReadOrders(rUser.UserId, "User");
+
+      System.Console.WriteLine($"Welcome back {email}!");
+      System.Console.WriteLine();
       return eUser;
     }
 

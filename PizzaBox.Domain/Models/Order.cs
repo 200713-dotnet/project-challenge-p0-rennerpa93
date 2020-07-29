@@ -85,6 +85,10 @@ namespace PizzaBox.Domain.Models
 
     public override string ToString()
     {
+      if (Pizzas.Count < 1)
+      {
+        System.Console.WriteLine("There are no pizzas!");
+      }
       int count = 1;
       var sb = new StringBuilder();
       foreach (Pizza p in Pizzas)

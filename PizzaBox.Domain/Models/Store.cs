@@ -29,6 +29,11 @@ namespace PizzaBox.Domain.Models
 
     public void DisplayOrders()
     {
+      if (Orders.Count < 1)
+      {
+        System.Console.WriteLine("There are no orders!");
+        System.Console.WriteLine();
+      }
       int count = 1;
       foreach (Order order in Orders)
       {
@@ -46,7 +51,10 @@ namespace PizzaBox.Domain.Models
         double result = 0;
         foreach (Order o in Orders)
         {
-          result += o.CalculatePrice();
+          if (o.Status == "Complete")
+          {
+            result += o.CalculatePrice();
+          }
         }
         System.Console.WriteLine($"Total Sales: ${result}.");
         System.Console.WriteLine();
@@ -65,7 +73,7 @@ namespace PizzaBox.Domain.Models
 
       do
       {
-        System.Console.WriteLine("Type 1 to add a pizza, 2 to remove a pizza, 3 to complete the order, or 4 to quit.");
+        System.Console.WriteLine("Type 1 to add a pizza, 2 to modify your order, 3 to complete the order, or 4 to quit.");
         if (int.TryParse(System.Console.ReadLine(), out select))
         {
           System.Console.WriteLine();
@@ -78,9 +86,9 @@ namespace PizzaBox.Domain.Models
         switch (select)
         {
           case 1:
-            if (user.Orders.Count >= 10)
+            if (user.Orders.Count >= 50)
             {
-              System.Console.WriteLine("You cannot have more than 10 pizzas in one order!");
+              System.Console.WriteLine("You cannot have more than 50 pizzas in one order!");
               System.Console.WriteLine();
             }
             order.CreatePizza(this);
@@ -268,7 +276,7 @@ namespace PizzaBox.Domain.Models
           System.Console.WriteLine();
           return toppings;
         }
-        System.Console.WriteLine("Type a number to select a topping (2 minimum)");
+        System.Console.WriteLine("Type a number to select a topping (2 minimum, 5 max)");
         System.Console.WriteLine("1 - Cheese : $0.25");
         System.Console.WriteLine("2 - Pepperoni : $0.25");
         System.Console.WriteLine("3 - Green Peppers : $0.25");
@@ -276,10 +284,11 @@ namespace PizzaBox.Domain.Models
         System.Console.WriteLine("5 - Ham : $0.50");
         System.Console.WriteLine("6 - Sausage : $0.50");
         System.Console.WriteLine("7 - Pineapple : $0.50");
-        if (toppings.Count >= 2) {
+        if (toppings.Count >= 2)
+        {
           System.Console.WriteLine("8 - Finish");
         }
-        
+
 
         if (int.TryParse(System.Console.ReadLine(), out select))
         {
@@ -314,7 +323,8 @@ namespace PizzaBox.Domain.Models
             toppings.Add(new Topping("Pineapple", 0.50));
             break;
           case 8:
-            if (toppings.Count < 2) {
+            if (toppings.Count < 2)
+            {
               break;
             }
             else

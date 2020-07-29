@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PizzaBox.Domain.Models;
 using PizzaBox.Storing.Repositories;
@@ -20,6 +21,10 @@ namespace PizzaBox.Testing.Tests
     {
       var repo = new PizzaBoxRepository();
       Order o = new Order();
+      o.Status = "Complete";
+      o.StoreId = 1;
+      o.UserId = 1;
+      o.Date = DateTime.Now;
       Pizza p = new Pizza("Cheese Pizza", new Size("Small", 5.00), new Crust("Normal Crust", 0), new List<Topping> { new Topping("Cheese", 0.25) });
       Pizza p2 = new Pizza("Pepperoni Pizza", new Size("Small", 5.00), new Crust("Normal Crust", 0), new List<Topping> { new Topping("Cheese", 0.25), new Topping("Pepperoni", 0.25) });
       o.Pizzas.Add(p);

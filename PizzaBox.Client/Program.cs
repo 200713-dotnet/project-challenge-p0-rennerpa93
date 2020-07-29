@@ -20,10 +20,12 @@ namespace PizzaBox.Client
       bool storeEnd = true;
       do
       {
+        int storeCount = 1;
         System.Console.WriteLine("Pick the number for the store you would like to use.");
         foreach (Store s in stores)
         {
-          System.Console.WriteLine($"{s.Id} - {s.Location}");
+          System.Console.WriteLine($"{storeCount} - {s.Location}");
+          storeCount += 1;
         }
 
         if (int.TryParse(System.Console.ReadLine(), out num))
@@ -86,7 +88,7 @@ namespace PizzaBox.Client
       else
       {
         string email;
-        System.Console.WriteLine("Please enter your email");
+        System.Console.WriteLine("Please enter your username");
         email = System.Console.ReadLine();
         System.Console.WriteLine();
         User user = repo.ReadUser(email);
