@@ -18,8 +18,8 @@ namespace PizzaBox.Storing.Repositories
       newUser.Email = email;
 
       _db.Add(entUser);
-      newUser.Id = entUser.UserId;
       _db.SaveChanges();
+      newUser.Id = entUser.UserId;
 
       return newUser;
     }

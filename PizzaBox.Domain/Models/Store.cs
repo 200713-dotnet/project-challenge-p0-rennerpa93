@@ -268,7 +268,7 @@ namespace PizzaBox.Domain.Models
           System.Console.WriteLine();
           return toppings;
         }
-        System.Console.WriteLine("Type a number to select add a topping");
+        System.Console.WriteLine("Type a number to select a topping (2 minimum)");
         System.Console.WriteLine("1 - Cheese : $0.25");
         System.Console.WriteLine("2 - Pepperoni : $0.25");
         System.Console.WriteLine("3 - Green Peppers : $0.25");
@@ -276,7 +276,10 @@ namespace PizzaBox.Domain.Models
         System.Console.WriteLine("5 - Ham : $0.50");
         System.Console.WriteLine("6 - Sausage : $0.50");
         System.Console.WriteLine("7 - Pineapple : $0.50");
-        System.Console.WriteLine("8 - Finish");
+        if (toppings.Count >= 2) {
+          System.Console.WriteLine("8 - Finish");
+        }
+        
 
         if (int.TryParse(System.Console.ReadLine(), out select))
         {
@@ -311,7 +314,16 @@ namespace PizzaBox.Domain.Models
             toppings.Add(new Topping("Pineapple", 0.50));
             break;
           case 8:
-            end = false;
+            if (toppings.Count < 2) {
+              break;
+            }
+            else
+            {
+              end = false;
+              break;
+            }
+          default:
+            System.Console.WriteLine("Invalid Choice");
             break;
         }
       } while (end);
