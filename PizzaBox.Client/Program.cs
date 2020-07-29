@@ -15,16 +15,17 @@ namespace PizzaBox.Client
 
       Store MainStore;
       List<Store> stores = repo.ReadStores();
-      System.Console.WriteLine("Pick the number for the store you would like to use.");
-      foreach (Store s in stores)
-      {
-        System.Console.WriteLine($"{s.Id} - {s.Location}");
-      }
 
       int num;
       bool storeEnd = true;
       do
       {
+        System.Console.WriteLine("Pick the number for the store you would like to use.");
+        foreach (Store s in stores)
+        {
+          System.Console.WriteLine($"{s.Id} - {s.Location}");
+        }
+
         if (int.TryParse(System.Console.ReadLine(), out num))
         {
           System.Console.WriteLine();
@@ -34,6 +35,11 @@ namespace PizzaBox.Client
         {
           System.Console.WriteLine("Invalid Choice");
           continue;
+        }
+        if (num > stores.Count)
+        {
+          System.Console.WriteLine("Invalid Choice");
+          storeEnd = true;
         }
       } while (storeEnd);
 
@@ -91,7 +97,7 @@ namespace PizzaBox.Client
         {
           System.Console.WriteLine("Pick the number for what you would like to do.");
           System.Console.WriteLine("1 - Check Orders");
-          System.Console.WriteLine("2 - Create/Modify Order");
+          System.Console.WriteLine("2 - Create");
           System.Console.WriteLine("3 - Quit");
           if (int.TryParse(System.Console.ReadLine(), out select))
           {
@@ -110,13 +116,56 @@ namespace PizzaBox.Client
             case 2:
               Order order = new Order();
               MainStore.ModifyOrder(user, order);
+              repo.CreateOrder(order, user.Id, MainStore.Id);
               break;
+              // bool orderEnd = true;
+              // int choices;
+              // Order order;
+              // do
+              // {
+              //   System.Console.WriteLine("Pick the number to create or modify an order.");
+              //   System.Console.WriteLine();
+              //   System.Console.WriteLine("0 - New Order");
+              //   System.Console.WriteLine();
+              //   System.Console.WriteLine("---------------------");
+              //   user.DisplayOrders();
+              //   if (int.TryParse(System.Console.ReadLine(), out choices))
+              //   {
+              //     System.Console.WriteLine();
+              //     orderEnd = false;
+              //   }
+              //   else
+              //   {
+              //     System.Console.WriteLine("Invalid Choice");
+              //     System.Console.WriteLine();
+              //     continue;
+              //   }
+              //   if (choices >= user.Orders.Count)
+              //   {
+              //     System.Console.WriteLine("Invalid Choice");
+              //     System.Console.WriteLine();
+              //     orderEnd = true;
+              //   }
+              // } while (orderEnd);
+              // if (choices == 0)
+              // {
+              //   order = new Order();
+              //   MainStore.ModifyOrder(user, order);
+              // }
+              // else
+              // {
+              //   order = user.Orders[choices - 1];
+              //   MainStore.ModifyOrder(user, order, "mod");
+              // }
+              // break;
             default:
               check = false;
               break;
           }
         } while (check);
+        // repo.UpdateUser(user, MainStore.Id, MainStore.Location, DateTime.Now);
       }
+      
     }
   }
 }

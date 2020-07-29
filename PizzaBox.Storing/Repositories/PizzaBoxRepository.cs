@@ -63,7 +63,7 @@ namespace PizzaBox.Storing.Repositories
       _db.SaveChanges();
     }
 
-    public void CreateOrder(domain.Order order, int userid, int storeid)
+    public int CreateOrder(domain.Order order, int userid, int storeid)
     {
       var newOrder = new Order();
       newOrder.UserId = userid;
@@ -78,7 +78,7 @@ namespace PizzaBox.Storing.Repositories
       {
         CreatePizza(p, newOrderId);
       }
-
+      return newOrderId;
     }
 
     public List<domain.Order> ReadOrders(int id, string type = "Store")
@@ -198,10 +198,75 @@ namespace PizzaBox.Storing.Repositories
       return eUser;
     }
 
-    public void UpdatePizza()
+    // public void UpdatePizza(domain.Pizza pizza, int orderId)
+    // {
+    //   var newPizza = new Pizza();
+
+    //   newPizza.Name = pizza.Name;
+
+    //   newPizza.Crust = new Crust()
+    //   {
+    //     Type = pizza.Crust.Type,
+    //     Price = (decimal)pizza.Crust.Price
+    //   };
+
+    //   newPizza.Size = new Size()
+    //   {
+    //     Name = pizza.Size.Name,
+    //     Price = (decimal)pizza.Size.Price
+    //   };
+
+    //   newPizza.OrderId = orderId;
+
+    //   _db.Pizza.Add(newPizza);
+
+    //   foreach (domain.Topping t in pizza.Toppings)
+    //   {
+    //     var pizzaTopping = new PizzaTopping();
+    //     pizzaTopping.Pizza = newPizza;
+    //     Topping newTop = new Topping()
+    //     {
+    //       Name = t.Name,
+    //       Price = (decimal)t.Price
+    //     };
+    //     pizzaTopping.Topping = newTop;
+    //     _db.PizzaTopping.Add(pizzaTopping);
+    //   }
+
+    //   _db.SaveChanges();
+    // }
+    public void UpdateUser(domain.User user, int storeId, string store, DateTime date)
     {
+      var entUser = new User();
+      entUser.UserId = user.Id;
+      entUser.Email = user.Email;
+      entUser.CurrentStore = store;
+      entUser.LastOrdered = date;
+      List<Order> eOrders = new List<Order>();
+
+      foreach (domain.Order order in user.Orders)
+      {
+        var eOrder = new Order();
+        eOrder.OrderId = order.OrderId;
+        eOrder.UserId = user.Id;
+        eOrder.StoreId = storeId;
+        eOrder.Status = order.Status;
+        eOrder.DateCreated = order.Date;
+        eOrders.Add(eOrder);
+
+        // foreach (domain.Pizza p in order.Pizzas)
+        // {
+        //   UpdatePizza(p, eOrder.OrderId);
+        // }
+      }
+
+      entUser.Order = eOrders;
+
+      _db.User.Update(entUser);
+      _db.SaveChanges();
+
     }
-    public void DeletePizza()
+    public void UpdateStore(domain.Store store)
     {
     }
   }

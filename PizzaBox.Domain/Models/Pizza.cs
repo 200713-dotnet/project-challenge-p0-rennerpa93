@@ -5,6 +5,7 @@ namespace PizzaBox.Domain.Models
 {
   public class Pizza
   {
+    
     public string Name { get; set; }
     public Size Size { get; set; }
     public Crust Crust { get; set; }

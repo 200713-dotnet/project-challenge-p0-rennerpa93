@@ -13,7 +13,7 @@ namespace PizzaBox.Domain.Models
       Location = "";
       Orders = new List<Order>();
     }
-    
+
     public Store(string location)
     {
       Location = location;
@@ -29,9 +29,13 @@ namespace PizzaBox.Domain.Models
 
     public void DisplayOrders()
     {
+      int count = 1;
       foreach (Order order in Orders)
       {
+        System.Console.WriteLine($"Order #{count}");
         System.Console.WriteLine(order);
+        System.Console.WriteLine("---------------------");
+        count += 1;
       }
     }
 
@@ -39,7 +43,13 @@ namespace PizzaBox.Domain.Models
     {
       if (option == "weekly")
       {
-        
+        double result = 0;
+        foreach (Order o in Orders)
+        {
+          result += o.CalculatePrice();
+        }
+        System.Console.WriteLine($"Total Sales: ${result}.");
+        System.Console.WriteLine();
       }
       else
       {
@@ -47,14 +57,15 @@ namespace PizzaBox.Domain.Models
       }
     }
 
-    public void ModifyOrder(User user, Order order)
+    public void ModifyOrder(User user, Order order, string newOrder = "New")
     {
       bool modify = true;
       int select;
+      order.Status = "Incomplete";
 
       do
       {
-        System.Console.WriteLine("Type 1 to add a pizza, 2 to remove a pizza, or 3 to quit");
+        System.Console.WriteLine("Type 1 to add a pizza, 2 to remove a pizza, 3 to complete the order, or 4 to quit.");
         if (int.TryParse(System.Console.ReadLine(), out select))
         {
           System.Console.WriteLine();
@@ -67,15 +78,19 @@ namespace PizzaBox.Domain.Models
         switch (select)
         {
           case 1:
-            if (user.Orders.Count >= 50)
+            if (user.Orders.Count >= 10)
             {
-              System.Console.WriteLine("You cannot have more than 50 pizzas in one order!");
+              System.Console.WriteLine("You cannot have more than 10 pizzas in one order!");
               System.Console.WriteLine();
             }
             order.CreatePizza(this);
             break;
           case 2:
             order.RemovePizza();
+            break;
+          case 3:
+            order.Status = "Complete";
+            modify = false;
             break;
           default:
             modify = false;
@@ -85,9 +100,11 @@ namespace PizzaBox.Domain.Models
 
       System.Console.WriteLine("Final Order:");
       order.DisplayOrder();
-      Orders.Add(order);
-      user.Orders.Add(order);
-
+      if (newOrder == "New")
+      {
+        Orders.Add(order);
+        user.Orders.Add(order);
+      }
     }
     public Pizza ChoosePizza()
     {
@@ -102,6 +119,7 @@ namespace PizzaBox.Domain.Models
         System.Console.WriteLine("3 - Vegetarian Pizza - $5.75");
         System.Console.WriteLine("4 - Hawaiian Pizza - $6.25");
         System.Console.WriteLine("5 - Custom - $5.00 + toppings");
+        System.Console.WriteLine("6 - Gold Pizza - $245.00");
         if (int.TryParse(System.Console.ReadLine(), out select))
         {
           System.Console.WriteLine();
@@ -135,6 +153,10 @@ namespace PizzaBox.Domain.Models
           case 5:
             pizza.Name = "Custom Pizza";
             pizza.Toppings = ChooseToppings();
+            break;
+          case 6:
+            pizza.Name = "Gold Pizza";
+            pizza.Toppings = new List<Topping> { new Topping("Gold", 240.00) };
             break;
           default:
             end = true;

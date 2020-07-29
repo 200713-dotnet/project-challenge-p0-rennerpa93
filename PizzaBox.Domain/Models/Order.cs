@@ -43,6 +43,7 @@ namespace PizzaBox.Domain.Models
       do
       {
         System.Console.WriteLine("Type the number of the pizza to remove or 0 to return");
+        System.Console.WriteLine();
         DisplayOrder();
         if (int.TryParse(System.Console.ReadLine(), out select))
         {
@@ -57,10 +58,12 @@ namespace PizzaBox.Domain.Models
         if ((select > Pizzas.Count || select < 1))
         {
           System.Console.WriteLine("");
+          end = false;
         }
         else
         {
           Pizzas.RemoveAt(select - 1);
+          end = false;
         }
       } while (end);
     }
